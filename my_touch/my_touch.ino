@@ -4,9 +4,9 @@
 #include <AXP192.h>
 
 void vibration() {
-//      M5.Axp.SetLDOEnable(3,true);
+      M5.Axp.SetLDOEnable(3,true);
       delay(100);
-//      M5.Axp.SetLDOEnable(3,false); 
+      M5.Axp.SetLDOEnable(3,false); 
 }
 
 void showNum(short int X, short int Y) {
@@ -45,15 +45,15 @@ void setup() {
   M5.Lcd.setTextColor(BLACK);
   M5.Lcd.setTextSize(2);
   touchsetup();
+  vibration();
 }
 
 void loop() {
   TouchPoint_t pos = M5.Touch.getPressPoint();
   if (pos.y > 240)
-    if (pos.x < 109) {
+    if (pos.x < 109)
       M5.Lcd.setTextColor(RED);
-      vibration();
-    } else if (pos.x > 218)
+    else if (pos.x > 218)
       M5.Lcd.setTextColor(BLUE);
     else if (pos.x >= 109 && pos.x <= 218)
       M5.Lcd.setTextColor(GREEN);
