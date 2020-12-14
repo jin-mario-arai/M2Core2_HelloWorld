@@ -1,17 +1,10 @@
 #include <M5Core2.h>
 #include <Fonts/EVA_20px.h>
 #include <stdio.h>
-#include <AXP192.h>
-
-void vibration(int d) {
-      M5.Axp.SetLDOEnable(3,true);
-      delay(d);
-      M5.Axp.SetLDOEnable(3,false); 
-}
 
 void showNum(short int X, short int Y) {
   char Str[10];
-  M5.Lcd.clear(WHITE);
+  M5.Lcd.clear(BLACK);
   M5.Lcd.setCursor(10, 10);
   M5.Lcd.printf("DISPLAY Test!");
   M5.Lcd.setCursor(10, 26);
@@ -35,30 +28,32 @@ void touchflush() {
   if ( touchStateNow )
   {
     showNum(pos.x, pos.y);
-    vibration(300);
   }
 }
 
 void setup() {
   M5.begin(true, true, true, true);
   Serial.begin(115200);
-  M5.Lcd.fillScreen(WHITE);
-  M5.Lcd.setTextColor(BLACK);
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setTextColor(WHITE);
   M5.Lcd.setTextSize(2);
   touchsetup();
-  vibration(3000);
-
 }
 
 void loop() {
   TouchPoint_t pos = M5.Touch.getPressPoint();
-  if (pos.y > 240)
-    if (pos.x < 109)
+  
+  if (pos.y > 240) {  // Button area
+    if (pos.x < 109) { // Left
+      M5.Lcd.setTextColor(WHITE);
+    }
+    else if (pos.x > 218) { // Right
       M5.Lcd.setTextColor(RED);
-    else if (pos.x > 218)
+    } 
+    else if (pos.x >= 109 && pos.x <= 218) { // Middle
       M5.Lcd.setTextColor(BLUE);
-    else if (pos.x >= 109 && pos.x <= 218)
-      M5.Lcd.setTextColor(GREEN);
+    }
+  }
   touchflush();
   delay(100);
 }
